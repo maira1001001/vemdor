@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -125,7 +125,7 @@ return [
 
     'log' => env('APP_LOG', 'daily'),
 	
-	'log_max_files' =>  env('APP_LOG_MAX_FILES', 2),
+    'log_max_files' =>  env('APP_LOG_MAX_FILES', 2),
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
     
