@@ -78,7 +78,7 @@ class PaymentMethod extends BaseModel
     {
         parent::boot();
 	
-		PaymentMethod::observe(PaymentMethodObserver::class);
+        PaymentMethod::observe(PaymentMethodObserver::class);
 		
         static::addGlobalScope(new ActiveScope());
     }

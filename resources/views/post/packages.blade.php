@@ -1,3 +1,79 @@
+<?php 
+use MP;
+//$mp = new MP("2787739254545664", "j1b6PIZWzjuXARmyX93NEJ0xTCU1uyZt");
+
+$preference_data = array(
+    "items" => array(
+        array(
+            "id" => "Code",
+            "title" => "Title of what you are paying for",
+            "currency_id" => "USD",
+            "picture_url" =>"https://www.mercadopago.com/org-img/MP3/home/logomp3.gif",
+            "description" => "Description",
+            "category_id" => "Category",
+            "quantity" => 1,
+            "unit_price" => 10.2
+        )
+    ),
+    "payer" => array(
+        "name" => "user-name",
+        "surname" => "user-surname",
+        "email" => "user@email.com",
+        "date_created" => "2014-07-28T09:50:37.521-04:00",
+        "phone" => array(
+            "area_code" => "11",
+            "number" => "4444-4444"
+        ),
+        "identification" => array(
+            "type" => "DNI",
+            "number" => "12345678"
+        ),
+        "address" => array(
+            "street_name" => "Street",
+            "street_number" => 123,
+            "zip_code" => "1430"
+        )
+    ),
+    "back_urls" => array(
+        "success" => "https://www.success.com",
+        "failure" => "http://www.failure.com",
+        "pending" => "http://www.pending.com"
+    ),
+    "auto_return" => "approved",
+    "payment_methods" => array(
+        "excluded_payment_methods" => array(
+            array(
+                "id" => "amex",
+            )
+        ),
+        "excluded_payment_types" => array(
+            array(
+                "id" => "ticket"
+            )
+        ),
+        "installments" => 24,
+        "default_payment_method_id" => null,
+        "default_installments" => null,
+    ),
+    "shipments" => array(
+        "receiver_address" => array(
+            "zip_code" => "1430",
+            "street_number"=> 123,
+            "street_name"=> "Street",
+            "floor"=> 4,
+            "apartment"=> "C"
+        )
+    ),
+    "notification_url" => "https://www.your-site.com/ipn",
+    "external_reference" => "Reference_1234",
+    "expires" => false,
+    "expiration_date_from" => null,
+    "expiration_date_to" => null
+);
+
+$preference = MP::create_preference($preference_data);
+?>
+
 {{--
  * LaraClassified - Geo Classified Ads CMS
  * Copyright (c) BedigitCom. All Rights Reserved
@@ -34,16 +110,17 @@
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="post_id" value="{{ $post->id }}">
                                     <fieldset>
-
                                         @if (isset($packages) and isset($paymentMethods) and $packages->count() > 0 and $paymentMethods->count() > 0)
                                             <div class="well" style="padding-bottom: 0;">
                                                 <h3><i class="icon-certificate icon-color-1"></i> {{ t('Premium Ad') }} </h3>
                                                 <p>
                                                     {{ t('The premium package help sellers to promote their products or services by giving more visibility to their ads to attract more buyers and sell faster.') }}
                                                 </p>
-                                                <div class="form-group <?php echo (isset($errors) and $errors->has('package')) ? 'has-error' : ''; ?>"
-                                                     style="margin-bottom: 0;">
-                                                    <table id="packagesTable" class="table table-hover checkboxtable" style="margin-bottom: 0;">
+<div class="form-group <?php echo (isset($errors) and $errors->has('package')) ? 'has-error' : ''; ?>"
+     style="margin-bottom: 0;">
+    <table id="packagesTable" class="table table-hover checkboxtable" style="margin-bottom: 0;">
+                                      }
+                                      }
 <?php
 // Get Current Payment data
 $currentPaymentMethodId = 0;
@@ -81,110 +158,102 @@ if ($currentPackageId == $package->tid) {
   }
 }
 ?>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="radio">
-                                                                        <label>
-                                                                            <input class="package-selection" type="radio" name="package"
-                                                                                   id="package-{{ $package->tid }}"
-                                                                                   value="{{ $package->tid }}"
-                                           data-name="{{ $package->name }}"
-                                           data-currencysymbol="{{ $package->currency->symbol }}"
-                                           data-currencyinleft="{{ $package->currency->in_left }}"
-                                                                                    {{ (old('package', $currentPackageId)==$package->tid) ? ' checked' : (($package->price==0) ? ' checked' : '') }} {{ $packageStatus }}>
-                                                                            <strong class="tooltipHere" title="" data-placement="right" data-toggle="tooltip" data-original-title="{!! $package->description !!}">{!! $package->name . $badge !!} </strong>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <p id="price-{{ $package->tid }}">
-                                                                        @if ($package->currency->in_left == 1)
-                                                                            <span class="price-currency">{{ $package->currency->symbol }}</span>
-                                                                        @endif
-                                                                        <span class="price-int">{{ $package->price }}</span>
-                                                                        @if ($package->currency->in_left == 0)
-                                                                            <span class="price-currency">{{ $package->currency->symbol }}</span>
-                                                                        @endif
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+          <tr>
+              <td>
+                  <div class="radio">
+                      <label>
+                          <input class="package-selection" type="radio" name="package"
+                                 id="package-{{ $package->tid }}"
+                                 value="{{ $package->tid }}"
+data-name="{{ $package->name }}"
+data-currencysymbol="{{ $package->currency->symbol }}"
+data-currencyinleft="{{ $package->currency->in_left }}"
+                                  {{ (old('package', $currentPackageId)==$package->tid) ? ' checked' : (($package->price==0) ? ' checked' : '') }} {{ $packageStatus }}>
+                          <strong class="tooltipHere" title="" data-placement="right" data-toggle="tooltip" data-original-title="{!! $package->description !!}">{!! $package->name . $badge !!} </strong>
+                      </label>
+                  </div>
+              </td>
+              <td>
+                  <p id="price-{{ $package->tid }}">
+                      @if ($package->currency->in_left == 1)
+                          <span class="price-currency">{{ $package->currency->symbol }}</span>
+                      @endif
+                      <span class="price-int">{{ $package->price }}</span>
+                      @if ($package->currency->in_left == 0)
+                          <span class="price-currency">{{ $package->currency->symbol }}</span>
+                      @endif
+                  </p>
+              </td>
+          </tr>
+      @endforeach
 
-                                                        <tr>
-                                                            <td>
-                                                                <div class="form-group <?php echo (isset($errors) and $errors->has('payment_method')) ? 'has-error' : ''; ?>"
-                                                                     style="margin-bottom: 0;">
-                                                                    <div class="col-md-8">
-                                                                        <select class="form-control selecter" name="payment_method" id="payment_method">
-										<p>maiiii: {{ $paymentMethods }}</p>
-                                                                            @foreach ($paymentMethods as $paymentMethod)
+      <tr>
+          <td>
+              <div class="form-group <?php echo (isset($errors) and $errors->has('payment_method')) ? 'has-error' : ''; ?>"
+                   style="margin-bottom: 0;">
+                  <div class="col-md-8">
+                    @foreach ($paymentMethods as $paymentMethod)
 
-                                                                                @if (view()->exists('payment::' . $paymentMethod->name))
-                                                                                    <option value="{{ $paymentMethod->id }}" data-name="{{ $paymentMethod->name }}" {{ (old('payment_method', $currentPaymentMethodId)==$paymentMethod->id) ? 'selected="selected"' : '' }}>
-                                                                                        @if ($paymentMethod->name == 'offlinepayment')
-                                                                                            {{ trans('offlinepayment::messages.Offline Payment') }}
-                                                                                        @else
-                                                                                            {{ $paymentMethod->display_name }}
-                                                                                        @endif
-                                                                                    </option>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <p style="margin-top: 7px;">
-                                                                    <strong>
-                                    {{ t('Payable Amount') }} :
-                                    <span class="price-currency amount-currency currency-in-left" style="display: none;"></span>
-                                                                        <span class="payable-amount">0</span>
-                                    <span class="price-currency amount-currency currency-in-right" style="display: none;"></span>
-                                                                    </strong>
-                                                                </p>
-                                                            </td>
-                                                        </tr>
+                      <a href="<?php echo $preference["response"]["sandbox_init_point"]; ?>" name="MP-Checkout" class="blue-rn-m-arall">{{ $paymentMethod->display_name }} </a>
+                      <script type="text/javascript" src="//resources.mlstatic.com/mptools/render.js"></script>
+                              
+                    @endforeach
+                  </div>
+              </div>
+          </td>
+          <td>
+              <p style="margin-top: 7px;">
+                  <strong>
+{{ t('Payable Amount') }} :
+<span class="price-currency amount-currency currency-in-left" style="display: none;"></span>
+                      <span class="payable-amount">0</span>
+<span class="price-currency amount-currency currency-in-right" style="display: none;"></span>
+                  </strong>
+              </p>
+          </td>
+      </tr>
+</table>
+</div>
+</div>
 
-                                                    </table>
-                                                </div>
-                                            </div>
+@if (isset($paymentMethods) and $paymentMethods->count() > 0)
+      <!-- Payment Plugins -->
+      <?php $hasCcBox = 0; ?>
+      @foreach($paymentMethods as $paymentMethod)
+          @if (view()->exists('payment::' . $paymentMethod->name))
+              @include('payment::' . $paymentMethod->name, [$paymentMethod->name . 'PaymentMethod' => $paymentMethod])
+          @endif
+          <?php if ($paymentMethod->has_ccbox == 1 && $hasCcBox == 0) $hasCcBox = 1; ?>
+      @endforeach
+  @endif
+@endif
 
-                                            @if (isset($paymentMethods) and $paymentMethods->count() > 0)
-                                                <!-- Payment Plugins -->
-                                                <?php $hasCcBox = 0; ?>
-                                                @foreach($paymentMethods as $paymentMethod)
-                                                    @if (view()->exists('payment::' . $paymentMethod->name))
-                                                        @include('payment::' . $paymentMethod->name, [$paymentMethod->name . 'PaymentMethod' => $paymentMethod])
-                                                    @endif
-                                                    <?php if ($paymentMethod->has_ccbox == 1 && $hasCcBox == 0) $hasCcBox = 1; ?>
-                                                @endforeach
-                                            @endif
-                                        @endif
+<!-- Button  -->
+<div class="form-group">
+  <div class="col-md-12 mt20" style="text-align: center;">
+    
+      @if (getSegment(2) == 'create')
+          <a id="skipBtn" href="{{ lurl('posts/create/' . $post->tmp_token . '/finish') }}" class="btn btn-default btn-lg">{{ t('Skip') }}</a>
+      @else
+          <a id="skipBtn" href="{{ lurl($post->uri) }}" class="btn btn-default btn-lg">{{ t('Skip') }}</a>
+      @endif
+     
+      <!--<button id="submitPostForm" class="btn btn-success btn-lg submitPostForm"> {{ t('Pay') }} </button>-->
+  </div>
+</div>
 
-                                        <!-- Button  -->
-                                        <div class="form-group">
-                                            <div class="col-md-12 mt20" style="text-align: center;">
-                                                @if (getSegment(2) == 'create')
-                                                    <a id="skipBtn" href="{{ lurl('posts/create/' . $post->tmp_token . '/finish') }}" class="btn btn-default btn-lg">{{ t('Skip') }}</a>
-                                                @else
-                                                    <a id="skipBtn" href="{{ lurl($post->uri) }}" class="btn btn-default btn-lg">{{ t('Skip') }}</a>
-                                                @endif
-                                                <button id="submitPostForm" class="btn btn-success btn-lg submitPostForm"> {{ t('Pay') }} </button>
-                                            </div>
-                                        </div>
+<div style="margin-bottom: 30px;"></div>
 
-                                        <div style="margin-bottom: 30px;"></div>
-
-                                    </fieldset>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.page-content -->
-            </div>
-        </div>
-    </div>
+</fieldset>
+</form>
+</div>
+</div>
+</div>
+</div>
+<!-- /.page-content -->
+</div>
+</div>
+</div>
 @endsection
 
 @section('after_styles')
